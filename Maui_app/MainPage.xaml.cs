@@ -12,6 +12,7 @@
         private void OnCounterClicked(object sender, EventArgs e)
         {
             count++;
+            //SOY MICKY
 
             if (count == 1)
                 CounterBtn.Text = $"Clicked {count} time";
