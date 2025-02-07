@@ -1,53 +1,49 @@
-﻿namespace Maui_app
+﻿using System;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage; // Necesario para usar Preferences
+
+namespace Maui_app
 {
     public partial class MainPage : ContentPage
     {
-        string translatedNumber;
-
         public MainPage()
         {
             InitializeComponent();
-        }
 
-        private void OnTranslate(object sender, EventArgs e)
-        {
-            string enteredNumber = PhoneNumberText.Text;
-            translatedNumber = PhonewordTranslator.ToNumber(enteredNumber);
-
-            if (!string.IsNullOrEmpty(translatedNumber))
+            // Cargar la nota guardada previamente si existe
+            if (Preferences.ContainsKey("SavedNote"))
             {
-                CallButton.IsEnabled = true;
-                CallButton.Text = "Call " + translatedNumber;
-            }
-            else
-            {
-                CallButton.IsEnabled = false;
-                CallButton.Text = "Call";
+                editor.Text = Preferences.Get("SavedNote", string.Empty);
             }
         }
 
-        async void OnCall(object sender, EventArgs e)
+        // Método para guardar la nota
+        private void OnSaveButtonClicked(object sender, EventArgs e)
         {
-            if (await DisplayAlert("Dial a Number",
-                                   "Would you like to call " + translatedNumber + "?",
-                                   "Yes",
-                                   "No"))
+            if (editor != null)  // Asegurar que el Editor no es nulo
             {
-                try
+                string note = editor.Text;
+                if (!string.IsNullOrWhiteSpace(note))
                 {
-                    if (PhoneDialer.Default.IsSupported)
-                        PhoneDialer.Default.Open(translatedNumber);
+                    Preferences.Set("SavedNote", note);
+                    DisplayAlert("Success", "Note saved successfully!", "OK");
                 }
-                catch (ArgumentNullException)
+                else
                 {
-                    await DisplayAlert("Unable to dial", "Phone number was not valid.", "OK");
+                    DisplayAlert("Error", "Cannot save an empty note!", "OK");
                 }
-                catch (Exception)
-                {
-                    await DisplayAlert("Unable to dial", "Phone dialing failed.", "OK");
-                }
+            }
+        }
+
+        // Método para borrar la nota
+        private void OnDeleteButtonClicked(object sender, EventArgs e)
+        {
+            if (editor != null)  // Asegurar que el Editor no es nulo
+            {
+                Preferences.Remove("SavedNote");
+                editor.Text = string.Empty;
+                DisplayAlert("Deleted", "Note deleted successfully!", "OK");
             }
         }
     }
-
 }
