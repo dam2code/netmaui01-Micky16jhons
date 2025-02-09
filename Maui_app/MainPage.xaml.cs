@@ -10,40 +10,45 @@ namespace Maui_app
         {
             InitializeComponent();
 
-            // Cargar la nota guardada previamente si existe
-            if (Preferences.ContainsKey("SavedNote"))
+            billInput.TextChanged += (s, e) => CalculateTip(false, false);
+            roundDown.Clicked += (s, e) => CalculateTip(false, true);
+            roundUp.Clicked += (s, e) => CalculateTip(true, false);
+
+            tipPercentSlider.ValueChanged += (s, e) =>
             {
-                editor.Text = Preferences.Get("SavedNote", string.Empty);
+                double pct = Math.Round(e.NewValue);
+                tipPercent.Text = pct + "%";
+                CalculateTip(false, false);
+            };
+        }
+
+        void CalculateTip(bool roundUp, bool roundDown)
+        {
+            double t;
+            if (Double.TryParse(billInput.Text, out t) && t > 0)
+            {
+                double pct = Math.Round(tipPercentSlider.Value);
+                double tip = Math.Round(t * (pct / 100.0), 2);
+
+                double final = t + tip;
+
+                if (roundUp)
+                {
+                    final = Math.Ceiling(final);
+                    tip = final - t;
+                }
+                else if (roundDown)
+                {
+                    final = Math.Floor(final);
+                    tip = final - t;
+                }
+
+                tipOutput.Text = tip.ToString("C");
+                totalOutput.Text = final.ToString("C");
             }
         }
 
-        // Método para guardar la nota
-        private void OnSaveButtonClicked(object sender, EventArgs e)
-        {
-            if (editor != null)  // Asegurar que el Editor no es nulo
-            {
-                string note = editor.Text;
-                if (!string.IsNullOrWhiteSpace(note))
-                {
-                    Preferences.Set("SavedNote", note);
-                    DisplayAlert("Success", "Note saved successfully!", "OK");
-                }
-                else
-                {
-                    DisplayAlert("Error", "Cannot save an empty note!", "OK");
-                }
-            }
-        }
-
-        // Método para borrar la nota
-        private void OnDeleteButtonClicked(object sender, EventArgs e)
-        {
-            if (editor != null)  // Asegurar que el Editor no es nulo
-            {
-                Preferences.Remove("SavedNote");
-                editor.Text = string.Empty;
-                DisplayAlert("Deleted", "Note deleted successfully!", "OK");
-            }
-        }
+        void OnNormalTip(object sender, EventArgs e) { tipPercentSlider.Value = 15; }
+        void OnGenerousTip(object sender, EventArgs e) { tipPercentSlider.Value = 20; }
     }
 }
