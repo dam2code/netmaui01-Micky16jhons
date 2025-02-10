@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TipCalculator", "TipCalculator.csproj", "{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TipCalculator", "TipCalculator.csproj", "{1D91B49C-395E-4B70-A714-A1BDA0311EA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6CD2BFD-533D-4A2C-BCD8-74EBB68954A3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D91B49C-395E-4B70-A714-A1BDA0311EA6}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
