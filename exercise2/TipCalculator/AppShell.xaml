@@ -7,8 +7,8 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Standard Tip"
+        ContentTemplate="{DataTemplate local:StandardTipPage}"
+        Route="StandardTipPage" />
 
 </Shell>

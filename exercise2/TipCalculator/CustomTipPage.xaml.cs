@@ -1,8 +1,8 @@
-﻿namespace TipCalculator;
+namespace TipCalculator;
 
-public partial class MainPage : ContentPage
+public partial class CustomTipPage : ContentPage
 {
-    public MainPage()
+    public CustomTipPage()
     {
         InitializeComponent();
 
@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
         tipPercentSlider.ValueChanged += (s, e) =>
         {
             double pct = Math.Round(e.NewValue);
-            tipPercent.Text = pct + "%";
+            tipPercent.Text = $"{pct}%";
             CalculateTip(false, false);
         };
     }
