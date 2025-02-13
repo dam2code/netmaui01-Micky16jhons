@@ -27,5 +27,7 @@ public static class MauiProgram
         // TODO: Add statements for adding PersonRepository as a singleton
 
         return builder.Build();
+
 	}
+
 }

@@ -1,63 +1,65 @@
 ﻿using People.Models;
 using SQLite;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace People;
 
 public class PersonRepository
 {
-    string _dbPath;
-    private SQLiteConnection conn;
-
+    private SQLiteAsyncConnection conn;
+    private readonly string _dbPath;
 
     public string StatusMessage { get; set; }
 
-    // TODO: Add variable for the SQLite connection
-
-    private void Init()
-    {
-        // TODO: Add code to initialize the repository         
-    }
-
     public PersonRepository(string dbPath)
     {
-        conn = new SQLiteConnection(dbPath);
-        conn.CreateTable<Person>();
+        _dbPath = dbPath;
     }
 
-    public void AddNewPerson(string name)
+    private async Task Init()
     {
-        int result = 0;
+        if (conn != null)
+            return;
+
+        conn = new SQLiteAsyncConnection(_dbPath);
+        await conn.CreateTableAsync<Person>();
+    }
+
+    public async Task AddNewPerson(string name)
+    {
         try
         {
+            await Init();
+
             if (string.IsNullOrEmpty(name))
                 throw new Exception("Valid name required");
 
-            result = conn.Insert(new Person { Name = name });
+            int result = await conn.InsertAsync(new Person { Name = name });
 
-            if (result == 1)
-                Console.WriteLine("Persona agregada correctamente.");
-            else
-                Console.WriteLine("Error al agregar persona.");
+            StatusMessage = $"{result} record(s) added [Name: {name}]";
+            Console.WriteLine(StatusMessage);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            StatusMessage = $"Failed to add {name}. Error: {ex.Message}";
+            Console.WriteLine(StatusMessage);
         }
     }
 
-
-    public List<Person> GetAllPeople()
+    public async Task<List<Person>> GetAllPeople()
     {
         try
         {
-            return conn.Table<Person>().ToList();
+            await Init();
+            return await conn.Table<Person>().ToListAsync();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            StatusMessage = $"Failed to retrieve data. {ex.Message}";
+            Console.WriteLine(StatusMessage);
         }
 
         return new List<Person>();
     }
-
 }
