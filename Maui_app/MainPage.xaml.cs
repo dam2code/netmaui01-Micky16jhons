@@ -1,25 +1,54 @@
-﻿namespace Maui_app
+﻿using System;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage; // Necesario para usar Preferences
+
+namespace Maui_app
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
+
+            billInput.TextChanged += (s, e) => CalculateTip(false, false);
+            roundDown.Clicked += (s, e) => CalculateTip(false, true);
+            roundUp.Clicked += (s, e) => CalculateTip(true, false);
+
+            tipPercentSlider.ValueChanged += (s, e) =>
+            {
+                double pct = Math.Round(e.NewValue);
+                tipPercent.Text = pct + "%";
+                CalculateTip(false, false);
+            };
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        void CalculateTip(bool roundUp, bool roundDown)
         {
-            count++;
+            double t;
+            if (Double.TryParse(billInput.Text, out t) && t > 0)
+            {
+                double pct = Math.Round(tipPercentSlider.Value);
+                double tip = Math.Round(t * (pct / 100.0), 2);
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+                double final = t + tip;
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+                if (roundUp)
+                {
+                    final = Math.Ceiling(final);
+                    tip = final - t;
+                }
+                else if (roundDown)
+                {
+                    final = Math.Floor(final);
+                    tip = final - t;
+                }
+
+                tipOutput.Text = tip.ToString("C");
+                totalOutput.Text = final.ToString("C");
+            }
         }
-    }
 
+        void OnNormalTip(object sender, EventArgs e) { tipPercentSlider.Value = 15; }
+        void OnGenerousTip(object sender, EventArgs e) { tipPercentSlider.Value = 20; }
+    }
 }
